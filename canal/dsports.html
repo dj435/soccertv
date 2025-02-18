@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Sin Pop-ups</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none; /* Evitar bordes del foco */
+        }
+    </style>
+</head>
+<body>
+    <iframe id="videoIframe" allowfullscreen="true" scrolling="no" 
+        src="https://la12hd.com/vivo/canal.php?stream=dsports" 
+        allow="encrypted-media">
+    </iframe>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Desactivar el evento de confirmación de navegación (para evitar el mensaje de confirmación)
+            window.onbeforeunload = null;
+
+            // Desactivar el `beforeunload` en el iframe también
+            const iframe = document.getElementById("videoIframe");
+            iframe.contentWindow.onbeforeunload = null;
+
+            // Bloquear cualquier intento de abrir ventanas emergentes
+            window.open = function() {
+                console.log("Intento de pop-up bloqueado.");
+                return null;
+            };
+
+            // Bloquear clics sospechosos que intenten abrir publicidad
+            document.addEventListener("click", function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                console.log("Intento de redirección bloqueado.");
+            }, true);
+
+            // Intentar darle el foco al iframe automáticamente para mejorar la navegación
+            iframe.focus();
+
+            // Intentar hacer foco directamente en el botón de play dentro del iframe (si el reproductor lo permite)
+            try {
+                const iframeDocument = iframe.contentWindow.document;
+                const playButton = iframeDocument.querySelector('button[aria-label="Play"]'); // Esto depende del reproductor
+                if (playButton) {
+                    playButton.focus();
+                }
+            } catch (e) {
+                console.log("No se pudo enfocar el botón de play dentro del iframe.");
+            }
+        });
+    </script>
+</body>
+</html>
