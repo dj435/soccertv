@@ -12,10 +12,6 @@
             overflow: hidden;
             background: black;
         }
-        #videoContainer {
-            width: 100%;
-            height: 100%;
-        }
         iframe {
             width: 100%;
             height: 100%;
@@ -63,21 +59,19 @@
 </head>
 <body>
 
-    <div id="videoContainer">
-        <iframe id="videoIframe" allowfullscreen="true" scrolling="no"
-            src="https://la12hd.com/vivo/canal.php?stream=disney1"  
-            allow="encrypted-media">
-        </iframe>
-    </div>
+    <iframe id="videoIframe" allowfullscreen="true" scrolling="no"
+        src="https://la12hd.com/vivo/canal.php?stream=disney1"  
+        allow="encrypted-media">
+    </iframe>
 
     <!-- Reloj en la esquina superior izquierda -->
     <div id="clock">00:00:00</div>
 
-    <!-- Botones de canales y botón de salida -->
+    <!-- Botones siempre visibles -->
     <div id="channelButtons">
         <button class="channel-btn" onclick="changeChannel('disney1')" id="btn1">Disney 1</button>
         <button class="channel-btn" onclick="changeChannel('disney2')" id="btn2">Disney 2</button>
-        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 6</button>
+        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 5</button>
         <button class="channel-btn exit-btn" onclick="exitPage()" id="btnExit">Salir</button>
     </div>
 
@@ -93,25 +87,12 @@
         updateClock();
 
         function changeChannel(channel) {
-            const container = document.getElementById("videoContainer");
+            const iframe = document.getElementById("videoIframe");
+            iframe.src = `https://la12hd.com/vivo/canal.php?stream=${channel}`;
 
-            // Eliminar el iframe actual
-            container.innerHTML = "";
-
-            // Crear un nuevo iframe sin historial de navegación
-            const newIframe = document.createElement("iframe");
-            newIframe.id = "videoIframe";
-            newIframe.allowFullscreen = true;
-            newIframe.scrolling = "no";
-            newIframe.allow = "encrypted-media";
-            newIframe.src = `https://la12hd.com/vivo/canal.php?stream=${channel}`;
-
-            // Agregar el nuevo iframe
-            container.appendChild(newIframe);
-
-            // Devolver el foco al primer botón de la lista para navegar
+            // Esperar medio segundo y devolver el foco al video
             setTimeout(() => {
-                document.getElementById("btn1").focus();
+                iframe.focus();
             }, 500);
         }
 
