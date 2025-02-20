@@ -67,8 +67,8 @@
     <div id="channelButtons">
         <button class="channel-btn" onclick="changeChannel('disney1')" id="btn1">Disney 1</button>
         <button class="channel-btn" onclick="changeChannel('disney2')" id="btn2">Disney 2</button>
-        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 9</button>
-        <button class="channel-btn" onclick="goToMainMenu()">Salir</button>
+        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 3</button>
+        <button class="channel-btn" onclick="exitPage()">Salir</button>
     </div>
 
     <script>
@@ -92,9 +92,15 @@
             }, 500);
         }
 
-        // Redirigir al menú principal
-        function goToMainMenu() {
-            window.location.href = "menu.html"; // Aquí va la ruta de tu página principal o menú
+        // Función para salir y cerrar la página
+        function exitPage() {
+            // Retroceder a la página anterior
+            window.history.back();
+            
+            // Esperar medio segundo y cerrar la ventana
+            setTimeout(() => {
+                window.close();
+            }, 500);
         }
 
         // Asegurar que el primer botón tenga foco al cargar la página
