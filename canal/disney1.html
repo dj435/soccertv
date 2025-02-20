@@ -51,10 +51,6 @@
             color: black;
             outline: none;
         }
-        .exit-btn {
-            background: red;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -71,8 +67,7 @@
     <div id="channelButtons">
         <button class="channel-btn" onclick="changeChannel('disney1')" id="btn1">Disney 1</button>
         <button class="channel-btn" onclick="changeChannel('disney2')" id="btn2">Disney 2</button>
-        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 5</button>
-        <button class="channel-btn exit-btn" onclick="exitPage()" id="btnExit">Salir</button>
+        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 8</button>
     </div>
 
     <script>
@@ -93,14 +88,6 @@
             // Esperar medio segundo y devolver el foco al video
             setTimeout(() => {
                 iframe.focus();
-            }, 500);
-        }
-
-        function exitPage() {
-            // Intenta cerrar la pestaña o volver a la página anterior
-            window.history.back();
-            setTimeout(() => {
-                window.close();
             }, 500);
         }
 
