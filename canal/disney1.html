@@ -46,7 +46,7 @@
             color: white;
             border: none;
             padding: 8px 12px;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             border-radius: 5px;
         }
@@ -54,6 +54,10 @@
             background: lime;
             color: black;
             outline: none;
+        }
+        .exit-btn {
+            background: red;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -69,13 +73,12 @@
     <!-- Reloj en la esquina superior izquierda -->
     <div id="clock">00:00:00</div>
 
-    <!-- Botones siempre visibles -->
+    <!-- Botones de canales y botón de salida -->
     <div id="channelButtons">
         <button class="channel-btn" onclick="changeChannel('disney1')" id="btn1">Disney 1</button>
         <button class="channel-btn" onclick="changeChannel('disney2')" id="btn2">Disney 2</button>
-        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 3</button>
-        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 4</button>
-        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 5</button>
+        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 6</button>
+        <button class="channel-btn exit-btn" onclick="exitPage()" id="btnExit">Salir</button>
     </div>
 
     <script>
@@ -106,9 +109,17 @@
             // Agregar el nuevo iframe
             container.appendChild(newIframe);
 
-            // Después de cambiar de canal, devolver el foco a los botones
+            // Devolver el foco al primer botón de la lista para navegar
             setTimeout(() => {
                 document.getElementById("btn1").focus();
+            }, 500);
+        }
+
+        function exitPage() {
+            // Intenta cerrar la pestaña o volver a la página anterior
+            window.history.back();
+            setTimeout(() => {
+                window.close();
             }, 500);
         }
 
