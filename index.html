@@ -40,6 +40,7 @@
         .grid-container a {
             display: block;
             text-decoration: none;
+            outline: none; /* Elimina el borde al hacer foco */
         }
 
         .grid-container img {
@@ -53,7 +54,7 @@
             box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.7);
         }
 
-        .grid-container img:focus {
+        .grid-container a:focus img {
             transform: scale(1.02);
             background-color: pink;
         }
@@ -62,20 +63,20 @@
 <body>
     <h2>CANALES DEPORTIVOS</h2>
     <div class="grid-container">
-        <a href="canal/tudn.html"><img src="logo/tudn.png" tabindex="0"></a>
-        <a href="canal/disney1.html"><img src="logo/disney1.png" tabindex="0"></a>
-        <a href="canal/dazn1.html"><img src="logo/dazn1.png" tabindex="0"></a>
-        <a href="canal/dsports.html"><img src="logo/dsports.png" tabindex="0"></a>
-        <a href="canal/dsports2.html"><img src="logo/dsports2.png" tabindex="0"></a>
-        <a href="canal/espn.html"><img src="logo/espn.png" tabindex="0"></a>
-        <a href="canal/espn2.html"><img src="logo/espn2.png" tabindex="0"></a>
-        <a href="canal/tntsports.html"><img src="logo/tntsports.png" tabindex="0"></a>
-        <a href="canal/espnpremium.html"><img src="logo/espnpremium.png" tabindex="0"></a>
-        <a href="canal/foxsports.html"><img src="logo/foxsports.png" tabindex="0"></a>
-        <a href="canal/foxsports2.html"><img src="logo/foxsports2.png" tabindex="0"></a>
-        <a href="canal/tycsports.html"><img src="logo/tycsports.png" tabindex="0"></a>
-        <a href="canal/tycinternacional.html"><img src="logo/tycinternacional.png" tabindex="0"></a>
-        <a href="canal/winsports.html"><img src="logo/winsports.png" tabindex="0"></a>
+        <a href="canal/tudn.html" tabindex="0"><img src="logo/tudn.png" alt="TUDN"></a>
+        <a href="canal/disney1.html" tabindex="0"><img src="logo/disney1.png" alt="Disney 1"></a>
+        <a href="canal/dazn1.html" tabindex="0"><img src="logo/dazn1.png" alt="DAZN 1"></a>
+        <a href="canal/dsports.html" tabindex="0"><img src="logo/dsports.png" alt="DSports"></a>
+        <a href="canal/dsports2.html" tabindex="0"><img src="logo/dsports2.png" alt="DSports 2"></a>
+        <a href="canal/espn.html" tabindex="0"><img src="logo/espn.png" alt="ESPN"></a>
+        <a href="canal/espn2.html" tabindex="0"><img src="logo/espn2.png" alt="ESPN 2"></a>
+        <a href="canal/tntsports.html" tabindex="0"><img src="logo/tntsports.png" alt="TNTSports"></a>
+        <a href="canal/espnpremium.html" tabindex="0"><img src="logo/espnpremium.png" alt="ESPN Premium"></a>
+        <a href="canal/foxsports.html" tabindex="0"><img src="logo/foxsports.png" alt="Fox Sports"></a>
+        <a href="canal/foxsports2.html" tabindex="0"><img src="logo/foxsports2.png" alt="Fox Sports 2"></a>
+        <a href="canal/tycsports.html" tabindex="0"><img src="logo/tycsports.png" alt="TyC Sports"></a>
+        <a href="canal/tycinternacional.html" tabindex="0"><img src="logo/tycinternacional.png" alt="TyC Internacional"></a>
+        <a href="canal/winsports.html" tabindex="0"><img src="logo/winsports.png" alt="Win Sports"></a>
     </div>
 </body>
 </html>
