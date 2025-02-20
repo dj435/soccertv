@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Sin Pop-ups</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+        }
+        #clock {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: lime;
+            padding: 5px 10px;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="videoIframe" allowfullscreen="true" scrolling="no" 
+        src="https://la12hd.com/vivo/canal.php?stream=disney1" 
+        allow="encrypted-media">
+    </iframe>
+
+    <!-- Reloj en la esquina inferior derecha -->
+    <div id="clock">00:00:00</div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); // Llamar inmediatamente para evitar ver "00:00:00"
+
+        document.addEventListener("DOMContentLoaded", function() {
+            window.onbeforeunload = null;
+            const iframe = document.getElementById("videoIframe");
+            iframe.contentWindow.onbeforeunload = null;
+
+            window.open = function() {
+                console.log("Intento de pop-up bloqueado.");
+                return null;
+            };
+
+            document.addEventListener("click", function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                console.log("Intento de redirección bloqueado.");
+            }, true);
+
+            iframe.focus();
+
+            try {
+                const iframeDocument = iframe.contentWindow.document;
+                const playButton = iframeDocument.querySelector('button[aria-label="Play"]');
+                if (playButton) {
+                    playButton.focus();
+                }
+            } catch (e) {
+                console.log("No se pudo enfocar el botón de play dentro del iframe.");
+            }
+        });
+    </script>
+</body>
+</html>
