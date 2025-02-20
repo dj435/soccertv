@@ -10,6 +10,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            background: black;
         }
         iframe {
             width: 100%;
@@ -28,27 +29,35 @@
             font-size: 20px;
             border-radius: 5px;
         }
-        #channelButtons {
+        #menu {
             position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: -150px; /* Oculto fuera de pantalla */
+            width: 150px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
-            gap: 5px;
-            transition: opacity 0.5s;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            transition: left 0.3s;
         }
         .channel-btn {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 10px;
             font-size: 13px;
+            margin: 5px;
+            width: 90%;
+            text-align: center;
             cursor: pointer;
             border-radius: 5px;
         }
-        .channel-btn:hover {
+        .channel-btn:hover, .channel-btn:focus {
             background: lime;
             color: black;
+            outline: none;
         }
     </style>
 </head>
@@ -62,15 +71,15 @@
     <!-- Reloj en la esquina superior izquierda -->
     <div id="clock">00:00:00</div>
 
-    <!-- Botones flotantes para cambiar de canal -->
-    <div id="channelButtons">
+    <!-- Menú lateral con botones de canales -->
+    <div id="menu">
         <button class="channel-btn" onclick="changeChannel('disney1')">Disney 1</button>
         <button class="channel-btn" onclick="changeChannel('disney2')">Disney 2</button>
-        <button class="channel-btn" onclick="changeChannel('disney3')">Disney 3</button>
+        <button class="channel-btn" onclick="changeChannel('disney3')">Disney 4</button>
     </div>
 
     <script>
-        let buttonTimeout;
+        let menuVisible = false;
 
         function updateClock() {
             const now = new Date();
@@ -85,28 +94,23 @@
         function changeChannel(channel) {
             const iframe = document.getElementById("videoIframe");
             iframe.src = `https://la12hd.com/vivo/canal.php?stream=${channel}`;
-
             setTimeout(() => {
                 iframe.focus();
             }, 500);
-
-            hideButtonsAfterDelay();
         }
 
-        function hideButtonsAfterDelay() {
-            clearTimeout(buttonTimeout);
-            buttonTimeout = setTimeout(() => {
-                document.getElementById("channelButtons").style.opacity = "0";
-            }, 3000);
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            if (menuVisible) {
+                menu.style.left = "-150px"; // Ocultar menú
+            } else {
+                menu.style.left = "0"; // Mostrar menú
+            }
+            menuVisible = !menuVisible;
         }
 
-        // Mostrar botones al mover el control remoto/mouse
-        document.addEventListener("mousemove", () => {
-            document.getElementById("channelButtons").style.opacity = "1";
-            hideButtonsAfterDelay();
-        });
-
-        hideButtonsAfterDelay(); // Para ocultarlos después de la primera carga
+        // Detectar tecla en control remoto para abrir/cerrar menú
+        document.addEventListener("keydown", toggleMenu);
     </script>
 
 </body>
