@@ -67,7 +67,7 @@
     <div id="channelButtons">
         <button class="channel-btn" onclick="changeChannel('disney1')" id="btn1">Disney 1</button>
         <button class="channel-btn" onclick="changeChannel('disney2')" id="btn2">Disney 2</button>
-        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 8</button>
+        <button class="channel-btn" onclick="changeChannel('disney3')" id="btn3">Disney 9</button>
     </div>
 
     <script>
@@ -94,6 +94,16 @@
         // Asegurar que el primer botón tenga foco al cargar la página
         window.onload = function() {
             document.getElementById("btn1").focus();
+
+            // Forzar foco en el iframe para habilitar interacciones
+            const iframe = document.getElementById("videoIframe");
+            iframe.focus();
+
+            // Intentar hacer que el video sea interactivo inmediatamente (si el reproductor lo permite)
+            const iframeDoc = iframe.contentWindow.document;
+            if (iframeDoc && iframeDoc.body) {
+                iframeDoc.body.click(); // Simular un clic para permitir interacción
+            }
         };
     </script>
 
