@@ -113,12 +113,20 @@
         };
 
         function exitPage() {
-            // Reemplazar la entrada actual del historial para evitar que el usuario regrese
-            history.replaceState(null, null, location.href);
+            // Redirigir al menú principal primero y eliminar la página actual del historial
+            window.location.replace("https://dj435.github.io/soccertv/"); // Página principal
 
-            // Redirigir al menú principal
-            window.location.href = "https://dj435.github.io/soccertv/"; // Página principal
+            // Usamos el replaceState para asegurarnos de que el historial no tenga la página actual
+            setTimeout(function() {
+                history.replaceState(null, null, location.href);
+            }, 500);
         }
+
+        // Evitar que el historial vuelva a cargar la página de Disney
+        window.onpopstate = function(event) {
+            // Evitar el regreso a la página de canales Disney
+            window.location.replace("https://dj435.github.io/soccertv/"); // Página principal
+        };
     </script>
 
 </body>
