@@ -82,14 +82,14 @@
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById("clock").textContent = ${hours}:${minutes};
         }
         setInterval(updateClock, 1000);
         updateClock();
 
         function changeChannel(channel) {
             const iframe = document.getElementById("videoIframe");
-            iframe.src = `https://la12hd.com/vivo/canal.php?stream=${channel}`;
+            iframe.src = https://la12hd.com/vivo/canal.php?stream=${channel};
 
             // Esperar medio segundo y devolver el foco al video
             setTimeout(() => {
@@ -113,20 +113,9 @@
         };
 
         function exitPage() {
-            // Redirigir al menú principal primero y eliminar la página actual del historial
-            window.location.replace("https://dj435.github.io/soccertv/"); // Página principal
-
-            // Usamos el replaceState para asegurarnos de que el historial no tenga la página actual
-            setTimeout(function() {
-                history.replaceState(null, null, location.href);
-            }, 500);
+            // Redirigir al menú principal (el sitio de la URL que proporcionaste)
+            window.location.href = "https://dj435.github.io/soccertv/";
         }
-
-        // Evitar que el historial vuelva a cargar la página de Disney
-        window.onpopstate = function(event) {
-            // Evitar el regreso a la página de canales Disney
-            window.location.replace("https://dj435.github.io/soccertv/"); // Página principal
-        };
     </script>
 
 </body>
