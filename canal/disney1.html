@@ -113,8 +113,11 @@
         };
 
         function exitPage() {
-            // Redirigir al menú principal (el sitio de la URL que proporcionaste)
-            window.location.href = "https://dj435.github.io/soccertv/";
+            // Reemplazar la entrada actual del historial para evitar que el usuario regrese
+            history.replaceState(null, null, location.href);
+
+            // Redirigir al menú principal
+            window.location.href = "https://dj435.github.io/soccertv/"; // Página principal
         }
     </script>
 
