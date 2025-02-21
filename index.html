@@ -37,6 +37,24 @@
             padding: 8px;
         }
       
+        .fixture-link {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin: 10px auto;
+            color: white;
+            background-color: red;
+            padding: 8px 15px;
+            width: fit-content;
+            border-radius: 5px;
+            text-decoration: none;
+            box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+        }
+
+        .fixture-link:hover {
+            background-color: darkred;
+        }
+      
         .grid-container a {
             display: block;
             text-decoration: none;
@@ -62,6 +80,10 @@
 </head>
 <body>
     <h2>CANALES DEPORTIVOS</h2>
+    
+    <!-- Enlace al fixture de Olé -->
+    <a href="https://www.ole.com.ar/agenda-deportiva" class="fixture-link" target="_blank">📅 Ver Fixture y Horarios</a>
+
     <div class="grid-container">
         <a href="canal/tudn.html" tabindex="0"><img src="logo/tudn.png" alt="TUDN"></a>
         <a href="canal/disney1.html" tabindex="0"><img src="logo/disney1.png" alt="Disney 1"></a>
