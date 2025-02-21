@@ -82,14 +82,14 @@
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById("clock").textContent = ${hours}:${minutes}:${seconds};
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
         function changeChannel(channel) {
             const iframe = document.getElementById("videoIframe");
-            iframe.src = https://la12hd.com/vivo/canal.php?stream=${channel};
+            iframe.src = `https://la12hd.com/vivo/canal.php?stream=${channel}`;
 
             // Esperar medio segundo y devolver el foco al video
             setTimeout(() => {
@@ -104,12 +104,6 @@
             // Forzar foco en el iframe para habilitar interacciones
             const iframe = document.getElementById("videoIframe");
             iframe.focus();
-
-            // Intentar hacer que el video sea interactivo inmediatamente (si el reproductor lo permite)
-            const iframeDoc = iframe.contentWindow.document;
-            if (iframeDoc && iframeDoc.body) {
-                iframeDoc.body.click(); // Simular un clic para permitir interacción
-            }
         };
 
         function exitPage() {
