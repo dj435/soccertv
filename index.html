@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canales Deportivos</title>
     <style>
-       body {
+        body {
             font-family: Arial, sans-serif;
             text-align: center;
             background: url('cesped.jpg') repeat fixed;
@@ -20,13 +20,13 @@
             max-width: 800px;
             margin: auto;
         }
-      
+
         h2 {
             font-size: 26px;
             font-family: "Arial Black", Gadget, sans-serif;
             color: white;
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
             background-color: gold;
             border: 1px solid black;
             border-radius: 5px;
@@ -36,25 +36,7 @@
             display: inline-block;
             padding: 8px;
         }
-      
-        .fixture-link {
-            font-size: 18px;
-            font-weight: bold;
-            display: block;
-            margin: 10px auto;
-            color: white;
-            background-color: red;
-            padding: 8px 15px;
-            width: fit-content;
-            border-radius: 5px;
-            text-decoration: none;
-            box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
-        }
 
-        .fixture-link:hover {
-            background-color: darkred;
-        }
-      
         .grid-container a {
             display: block;
             text-decoration: none;
@@ -76,13 +58,32 @@
             transform: scale(1.02);
             background-color: rgba(0,0,0,0.5);
         }
+
+        .marquee-container {
+            background: black;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            bottom: 10;
+            padding: 5px; 
+            border-bottom: 2px solid red;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        marquee {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <h2>CANALES DEPORTIVOS</h2>
-    
-    <!-- Enlace al fixture de Olé -->
-    <a href="fixture.html" class="fixture-link">📅 Ver Fixture y Horarios</a>
+
+    <!-- Marquesina -->
+    <div class="marquee-container">
+        <marquee behavior="scroll" direction="left" scrollamount="7" id="fixtureMarquee">Cargando partidos...</marquee> 
+    </div>
 
     <div class="grid-container">
         <a href="canal/tudn.html" tabindex="0"><img src="logo/tudn.png" alt="TUDN"></a>
@@ -100,5 +101,36 @@
         <a href="canal/tycinternacional.html" tabindex="0"><img src="logo/tycinternacional.png" alt="TyC Internacional"></a>
         <a href="canal/winsports.html" tabindex="0"><img src="logo/winsports.png" alt="Win Sports"></a>
     </div>
+
+    <script>
+        async function cargarFixture() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/dj435/soccertv/refs/heads/main/fixture.html');
+                const text = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, "text/html");
+
+                let partidos = [];
+                doc.querySelectorAll('.match').forEach(match => {
+                    let hora = match.querySelector('.time') ? match.querySelector('.time').textContent : 'Sin hora';
+                    let equipos = match.querySelector('.teams') ? match.querySelector('.teams').textContent.replace(' │ ', ' vs ') : 'Sin equipos';
+                    let canal = match.querySelector('.channel') ? match.querySelector('.channel').textContent : 'Sin canal';
+                    partidos.push(`| ${hora} - ${equipos} (${canal}) |`);
+                });
+
+                // Mostrar todos los partidos en la marquesina
+                if (partidos.length > 0) {
+                    document.getElementById('fixtureMarquee').textContent = partidos.join(" ");
+                } else {
+                    document.getElementById('fixtureMarquee').textContent = "No hay partidos disponibles.";
+                }
+            } catch (error) {
+                console.error("Error cargando el fixture:", error);
+                document.getElementById('fixtureMarquee').textContent = "Error al cargar partidos.";
+            }
+        }
+
+        cargarFixture();
+    </script>
 </body>
 </html>
