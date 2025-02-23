@@ -73,8 +73,18 @@
             position: relative;
         }
 
-        marquee {
-            width: 100%;
+        #fixtureMarquee {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: marquesina 30s linear infinite;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        @keyframes marquesina {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
     </style>
 </head>
@@ -83,7 +93,7 @@
 
     <!-- Marquesina -->
     <div class="marquee-container">
-        <marquee behavior="scroll" direction="left" scrollamount="7" id="fixtureMarquee">Cargando partidos...</marquee> 
+        <span id="fixtureMarquee">Cargando partidos...</span>
     </div>
 
     <div class="grid-container">
