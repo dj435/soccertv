@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Canales Disney</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+        }
+        #clock {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: lime;
+            padding: 5px 10px;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        #channelButtons {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+        .channel-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+        .channel-btn:focus {
+            background: lime;
+            color: black;
+            outline: none;
+        }
+        .exit-btn {
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="videoIframe" allowfullscreen="true" scrolling="no"
+        src="https://la12hd.com/vivo/canal.php?stream=mls1es"  
+        allow="encrypted-media">
+    </iframe>
+
+    <!-- Reloj en la esquina superior izquierda -->
+    <div id="clock">00:00:00</div>
+
+    <!-- Botones siempre visibles -->
+    <div id="channelButtons">
+        <button class="channel-btn" onclick="changeChannel('mls1es')" id="btn1">MLS PASS 1/button>
+        <button class="channel-btn" onclick="changeChannel('mls2es')" id="btn2">MLS PASS 2/button>
+        <button class="channel-btn" onclick="changeChannel('mls3es')" id="btn3">MLS PASS 3</button>
+        <button class="channel-btn exit-btn" onclick="exitPage()">Salir</button>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function changeChannel(channel) {
+            const iframe = document.getElementById("videoIframe");
+            iframe.src = `https://la12hd.com/vivo/canal.php?stream=${channel}`;
+
+            // Esperar medio segundo y devolver el foco al video
+            setTimeout(() => {
+                iframe.focus();
+            }, 500);
+        }
+
+        // Asegurar que el primer botón tenga foco al cargar la página
+        window.onload = function() {
+            document.getElementById("btn1").focus();
+
+            // Forzar foco en el iframe para habilitar interacciones
+            const iframe = document.getElementById("videoIframe");
+            iframe.focus();
+        };
+
+        function exitPage() {
+            // Redirigir al menú principal (el sitio de la URL que proporcionaste)
+            window.location.href = "https://dj435.github.io/soccertv/";
+        }
+    </script>
+
+</body>
+</html>
