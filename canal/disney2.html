@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Disney</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+        }
+        #clock {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: lime;
+            padding: 5px 10px;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        #channelButtons {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .channel-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+        .channel-btn:focus {
+            background: lime;
+            color: black;
+            outline: none;
+        }
+        .exit-btn {
+            background: red;
+            color: white;
+        }
+        #channelNumber {
+        
+           background: red;
+           color: white;
+            font-size: 20px;
+           border: 1px solid red;
+            font-family: Arial, sans-serif;
+            padding: 2px 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="videoIframe" allowfullscreen="true" scrolling="no"
+        src="https://la12hd.com/vivo/canal.php?stream=disney1"  
+        allow="encrypted-media">
+    </iframe>
+
+    <!-- Reloj en la esquina superior izquierda -->
+    <div id="clock">00:00:00</div>
+
+    <!-- Botones de navegación y salida -->
+    <div id="channelButtons">
+        <button class="channel-btn" onclick="prevChannel()">⏪ Anterior</button>
+        <span id="channelNumber">1</span>
+        <button class="channel-btn" onclick="nextChannel()">⏩ Siguiente</button>
+        <button class="channel-btn exit-btn" onclick="exitPage()">Salir</button>
+    </div>
+
+    <script>
+        const channels = [
+            'disney1', 'disney2', 'disney3', 'disney4', 'disney5', 'disney6', 'disney7', 'disney8',
+            'disney9', 'disney10', 'disney11', 'disney12', 'disney13', 'disney14', 'disney15', 'disney16'
+        ];
+
+        let currentChannelIndex = 0;
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function changeChannel(index) {
+            if (index < 0) index = channels.length - 1;
+            if (index >= channels.length) index = 0;
+            currentChannelIndex = index;
+
+            const iframe = document.getElementById("videoIframe");
+            iframe.src = `https://la12hd.com/vivo/canal.php?stream=${channels[currentChannelIndex]}`;
+
+            document.getElementById("channelNumber").textContent = currentChannelIndex + 1;
+
+            setTimeout(() => {
+                iframe.focus();
+            }, 500);
+        }
+
+        function nextChannel() {
+            changeChannel(currentChannelIndex + 1);
+        }
+
+        function prevChannel() {
+            changeChannel(currentChannelIndex - 1);
+        }
+
+        function exitPage() {
+            window.location.href = "https://dj435.github.io/soccertv/";
+        }
+
+        window.onload = function() {
+            document.querySelector(".channel-btn").focus();
+            document.getElementById("videoIframe").focus();
+            document.getElementById("channelNumber").textContent = currentChannelIndex + 1;
+        };
+    </script>
+
+</body>
+</html>
