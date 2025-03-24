@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Sin Pop-ups</title>
+    <title>ESPN</title>
     <style>
         html, body {
             margin: 0;
@@ -10,57 +10,134 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            background: black;
         }
         iframe {
             width: 100%;
             height: 100%;
             border: none;
-            outline: none; /* Evitar bordes del foco */
+            outline: none;
+        }
+        #clock {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: Cyan;
+            padding: 5px 10px;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        #channelButtons {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .channel-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 4px 4px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+        .channel-btn:focus {
+            background: lime;
+            color: black;
+            outline: none;
+        }
+        .exit-btn {
+            background: red;
+            color: white;
+        }
+        #channelName {
+            background: BLUE;
+            color: white;
+            font-size: 15px;
+            border: none;
+           border-radius: 5px;
+            font-family: Arial, sans-serif;
+            padding: 4px 4px;
         }
     </style>
 </head>
 <body>
-    <iframe id="videoIframe" allowfullscreen="true" scrolling="no" 
-        src="https://la12hd.com/vivo/canal.php?stream=foxsports" 
+
+    <iframe id="videoIframe" allowfullscreen="true" scrolling="no"
+        src="https://la12hd.com/vivo/canal.php?stream=foxsports"  
         allow="encrypted-media">
     </iframe>
 
+    <!-- Reloj en la esquina superior izquierda -->
+    <div id="clock">00:00:00</div>
+
+    <!-- Botones de navegación y salida -->
+    <div id="channelButtons">
+        <button class="channel-btn" onclick="prevChannel()">Anterior</button>
+        <span id="channelName">Fox Sports</span>
+        <button class="channel-btn" onclick="nextChannel()">Siguiente</button>
+        <button class="channel-btn exit-btn" onclick="exitPage()">Salir</button>
+    </div>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Desactivar el evento de confirmación de navegación (para evitar el mensaje de confirmación)
-            window.onbeforeunload = null;
+        const channels = [
+            { name: 'Fox Sports', stream: 'foxsports' },
+            { name: 'Fox Sports 2', stream: 'foxsports2' },
+            { name: 'Fox Sports 3', stream: 'foxsports3' }
+        ];
 
-            // Desactivar el `beforeunload` en el iframe también
+        let currentChannelIndex = 0;
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function changeChannel(index) {
+            if (index < 0) index = channels.length - 1;
+            if (index >= channels.length) index = 0;
+            currentChannelIndex = index;
+
             const iframe = document.getElementById("videoIframe");
-            iframe.contentWindow.onbeforeunload = null;
+            iframe.src = `https://la12hd.com/vivo/canal.php?stream=${channels[currentChannelIndex].stream}`;
 
-            // Bloquear cualquier intento de abrir ventanas emergentes
-            window.open = function() {
-                console.log("Intento de pop-up bloqueado.");
-                return null;
-            };
+            document.getElementById("channelName").textContent = channels[currentChannelIndex].name;
 
-            // Bloquear clics sospechosos que intenten abrir publicidad
-            document.addEventListener("click", function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-                console.log("Intento de redirección bloqueado.");
-            }, true);
+            setTimeout(() => {
+                iframe.focus();
+            }, 500);
+        }
 
-            // Intentar darle el foco al iframe automáticamente para mejorar la navegación
-            iframe.focus();
+        function nextChannel() {
+            changeChannel(currentChannelIndex + 1);
+        }
 
-            // Intentar hacer foco directamente en el botón de play dentro del iframe (si el reproductor lo permite)
-            try {
-                const iframeDocument = iframe.contentWindow.document;
-                const playButton = iframeDocument.querySelector('button[aria-label="Play"]'); // Esto depende del reproductor
-                if (playButton) {
-                    playButton.focus();
-                }
-            } catch (e) {
-                console.log("No se pudo enfocar el botón de play dentro del iframe.");
-            }
-        });
+        function prevChannel() {
+            changeChannel(currentChannelIndex - 1);
+        }
+
+        function exitPage() {
+            window.location.href = "https://dj435.github.io/soccertv/";
+        }
+
+        window.onload = function() {
+            document.querySelector(".channel-btn").focus();
+            document.getElementById("videoIframe").focus();
+            document.getElementById("channelName").textContent = channels[currentChannelIndex].name;
+        };
     </script>
+
 </body>
 </html>
