@@ -11,7 +11,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: black; /* Fondo negro para un mejor enfoque */
+            background-color: black; 
         }
 
         iframe {
@@ -21,7 +21,17 @@
             width: 100vw;
             height: 100vh;
             border: none;
-            outline: none; /* Evita el borde de selección */
+            outline: none;
+        }
+
+        #pointer {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: red;
+            border-radius: 50%;
+            z-index: 9999; /* Encima del iframe */
+            pointer-events: none; /* No bloquea los clics */
         }
     </style>
 </head>
@@ -38,22 +48,53 @@
         tabindex="0">
     </iframe>
 
+    <!-- Puntero virtual -->
+    <div id="pointer"></div>
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const iframe = document.getElementById("videoIframe");
+            const pointer = document.getElementById("pointer");
 
-            // Forzar el foco al iframe
             iframe.focus();
 
-            // Mantener el foco si se presiona "Enter", "OK", o "MediaPlay"
+            let posX = window.innerWidth * 0.9; // Cerca del icono de volumen
+            let posY = window.innerHeight * 0.9; // Ajuste vertical
+
+            const step = 20; // Velocidad de movimiento del puntero
+
+            // Actualizar posición del puntero
+            function updatePointer() {
+                pointer.style.left = `${posX}px`;
+                pointer.style.top = `${posY}px`;
+            }
+
+            updatePointer();
+
+            // Mover el puntero con el control remoto
             document.addEventListener("keydown", (e) => {
-                const focusKeys = ["Enter", "OK", "MediaPlay", "Play"];
-                if (focusKeys.includes(e.key)) {
-                    iframe.focus();
+                switch (e.key) {
+                    case "ArrowUp": posY -= step; break;
+                    case "ArrowDown": posY += step; break;
+                    case "ArrowLeft": posX -= step; break;
+                    case "ArrowRight": posX += step; break;
+                    case "Enter": simulateClick(); break; // Simular clic
                 }
+                updatePointer();
             });
 
-            // Reenfocar el iframe cada 3 segundos (optimizado)
+            // Simular clic en la posición del puntero
+            function simulateClick() {
+                const evt = new MouseEvent("click", {
+                    clientX: posX,
+                    clientY: posY,
+                    bubbles: true,
+                    cancelable: true
+                });
+                document.elementFromPoint(posX, posY).dispatchEvent(evt);
+            }
+
+            // Reenfocar el iframe cada 3 segundos (prevención de pérdida de foco)
             setInterval(() => iframe.focus(), 3000);
         });
     </script>
