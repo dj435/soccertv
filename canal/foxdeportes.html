@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Video</title>
+    <title>Video con Controles</title>
     <style>
         html, body {
             margin: 0;
@@ -13,7 +13,7 @@
             overflow: hidden;
         }
 
-        iframe {
+        .embed-responsive-item {
             width: 100%;
             height: 100%;
             border: none;
@@ -22,11 +22,16 @@
 </head>
 
 <body>
-    <iframe id="videoIframe" 
-        src="https://skyplustvhd.com/sky2.php?stream=fox_deportes_usa" 
-        allow="encrypted-media; autoplay" 
-        allowfullscreen>
+
+    <!-- Iframe con el video y controles visibles -->
+    <iframe class="embed-responsive-item" id="videoIframe"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen=""
+        src="https://skyplustvhd.com/sky2.php?stream=fox_deportes_usa"
+        scrolling="no">
     </iframe>
+
 </body>
 
 </html>
