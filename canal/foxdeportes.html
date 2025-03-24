@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Video con Controles</title>
+    <title>Video en Smart TV</title>
     <style>
         html, body {
             margin: 0;
@@ -13,24 +13,45 @@
             overflow: hidden;
         }
 
-        .embed-responsive-item {
+        iframe {
             width: 100%;
-            height: 100%;
+            height: 100%; 
             border: none;
+            outline: none; /* Evita el borde de selección */
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Iframe con el video y controles visibles -->
-    <iframe class="embed-responsive-item" id="videoIframe"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen=""
-        src="https://skyplustvhd.com/sky2.php?stream=fox_deportes_usa"
-        scrolling="no">
+    <!-- Iframe con el video -->
+    <iframe id="videoIframe" 
+        frameborder="0" 
+        allow="autoplay; encrypted-media" 
+        allowfullscreen 
+        src="https://skyplustvhd.com/sky2.php?stream=fox_deportes_usa" 
+        scrolling="no" 
+        tabindex="0">
     </iframe>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const iframe = document.getElementById("videoIframe");
+            
+            // Forzar el foco al iframe para habilitar la navegación con el control remoto
+            iframe.focus();
+            
+            // Escuchar eventos de teclas para volver a enfocar el iframe si pierde el foco
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === "OK") {
+                    iframe.focus(); // Reenfocar el iframe si se presiona "OK" o "Enter"
+                }
+            });
+
+            // Forzar el foco cada cierto tiempo (solución para Smart TVs antiguos)
+            setInterval(() => iframe.focus(), 1000);
+        });
+    </script>
 
 </body>
 
