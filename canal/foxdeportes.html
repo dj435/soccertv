@@ -35,7 +35,7 @@
             height: 30px;
             background: red;
             border-radius: 50%;
-            z-index: 9999;
+            z-index: 1;
         }
     </style>
 </head>
@@ -51,7 +51,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // URL del video con volumen forzado al máximo
+            // URL del video
             let videoURL = "https://skyplustvhd.com/sky2.php?stream=fox_deportes_usa";
 
             // Crear y agregar el iframe
@@ -79,17 +79,29 @@
 
             // Mostrar el círculo donde se realizará el clic
             const pointer = document.getElementById("pointer");
+
+            // Posicionar y simular clic en el botón de 'play'
             setTimeout(() => {
-                const x = window.innerWidth * 0.90; // Aproximadamente donde está el botón de volumen
-                const y = window.innerHeight * 0.94; // Cerca del área inferior
+                const xPlay = window.innerWidth * 0.50; // Aproximadamente en el centro, donde está el botón de play
+                const yPlay = window.innerHeight * 0.90; // Aproximadamente donde está el botón de play
+                pointer.style.left = `${xPlay}px`;
+                pointer.style.top = `${yPlay}px`;
 
-                // Posicionar el círculo
-                pointer.style.left = `${x}px`;
-                pointer.style.top = `${y}px`;
+                // Simular clic en el play
+                simulateClick(xPlay, yPlay);
 
-                // Simular el clic
-                simulateClick(x, y);
-            }, 5000); // Esperar 5 segundos antes de simular el clic
+                // Esperar un poco antes de simular el clic en el volumen
+                setTimeout(() => {
+                    const xVolume = window.innerWidth * 0.90; // Aproximadamente donde está el botón de volumen
+                    const yVolume = window.innerHeight * 0.94; // Cerca del área inferior
+                    pointer.style.left = `${xVolume}px`;
+                    pointer.style.top = `${yVolume}px`;
+
+                    // Simular clic en el volumen
+                    simulateClick(xVolume, yVolume);
+                }, 2000); // Esperar 2 segundos antes de simular clic en volumen
+
+            }, 5000); // Esperar 5 segundos antes de simular clic en 'play'
         });
     </script>
 
