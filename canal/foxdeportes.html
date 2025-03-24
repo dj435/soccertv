@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Video en Smart TV</title>
+    <title>Simulación de Puntero</title>
     <style>
         html, body {
             margin: 0;
@@ -35,7 +35,7 @@
             height: 30px;
             background: red;
             border-radius: 50%;
-            z-index: 1;
+            z-index: 10; /* Asegurarnos de que el puntero esté sobre otros elementos */
         }
     </style>
 </head>
@@ -46,7 +46,7 @@
         <!-- Aquí se insertará el iframe -->
     </div>
 
-    <!-- Círculo de referencia para el clic -->
+    <!-- Círculo de referencia para el puntero -->
     <div id="pointer"></div>
 
     <script>
@@ -65,7 +65,16 @@
 
             document.getElementById('playerContainer').appendChild(iframe);
 
-            // Función para simular clic
+            // Obtener el puntero
+            const pointer = document.getElementById('pointer');
+
+            // Función para mover el puntero con el mouse
+            document.addEventListener('mousemove', (e) => {
+                pointer.style.left = `${e.clientX - pointer.offsetWidth / 2}px`;
+                pointer.style.top = `${e.clientY - pointer.offsetHeight / 2}px`;
+            });
+
+            // Función para simular un clic con el puntero
             function simulateClick(x, y) {
                 const event = new MouseEvent('click', {
                     bubbles: true,
@@ -77,31 +86,9 @@
                 console.log("Simulación de clic en:", x, y);
             }
 
-            // Mostrar el círculo donde se realizará el clic
-            const pointer = document.getElementById("pointer");
-
-            // Posicionar y simular clic en el botón de 'play'
-            setTimeout(() => {
-                const xPlay = window.innerWidth * 0.50; // Aproximadamente en el centro, donde está el botón de play
-                const yPlay = window.innerHeight * 0.90; // Aproximadamente donde está el botón de play
-                pointer.style.left = `${xPlay}px`;
-                pointer.style.top = `${yPlay}px`;
-
-                // Simular clic en el play
-                simulateClick(xPlay, yPlay);
-
-                // Esperar un poco antes de simular el clic en el volumen
-                setTimeout(() => {
-                    const xVolume = window.innerWidth * 0.90; // Aproximadamente donde está el botón de volumen
-                    const yVolume = window.innerHeight * 0.94; // Cerca del área inferior
-                    pointer.style.left = `${xVolume}px`;
-                    pointer.style.top = `${yVolume}px`;
-
-                    // Simular clic en el volumen
-                    simulateClick(xVolume, yVolume);
-                }, 2000); // Esperar 2 segundos antes de simular clic en volumen
-
-            }, 5000); // Esperar 5 segundos antes de simular clic en 'play'
+            // Si aún deseas simular un clic en un área específica como "play" o "volumen"
+            // simplemente puedes hacer que el puntero llegue allí siguiendo el mouse
+            // o usando la función simulateClick donde lo necesites.
         });
     </script>
 
