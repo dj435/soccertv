@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Simulación de Puntero con Botón Play</title>
+    <title>Simulación de Puntero</title>
     <style>
         html, body {
             margin: 0;
@@ -36,23 +36,7 @@
             height: 30px;
             background: red;
             border-radius: 50%;
-            z-index: 10; /* Asegurarnos de que el puntero esté sobre otros elementos */
-        }
-
-        #playButton {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px;
-            height: 50px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            text-align: center;
-            line-height: 50px;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 5;
+            z-index: 10; /* Aseguramos que esté por encima del iframe */
         }
     </style>
 </head>
@@ -61,10 +45,10 @@
 
     <div id="playerContainer" class="player-container">
         <!-- Aquí se insertará el iframe -->
-        <div id="playButton">Play</div>
-        <!-- Círculo de referencia para el puntero -->
-        <div id="pointer"></div>
     </div>
+
+    <!-- Círculo de referencia para el puntero -->
+    <div id="pointer"></div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -107,28 +91,30 @@
                 // Actualizamos la posición del puntero
                 pointer.style.left = `${pointerX}px`;
                 pointer.style.top = `${pointerY}px`;
-            });
 
-            // Simulación de clic al puntero sobre el botón de Play
-            const playButton = document.getElementById('playButton');
-            playButton.addEventListener('click', () => {
-                alert("Video Reproducido");
-                // Aquí podrías agregar lógica para controlar el video, por ejemplo:
-                // iframe.play(); (si es un video embebido)
-            });
-
-            // Función para simular un clic sobre el botón
-            function simulateClick(x, y) {
-                const rect = playButton.getBoundingClientRect();
-                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    playButton.click(); // Hacer clic en el botón si está dentro de los límites
+                // Verificar si el puntero está cerca del iframe (simulamos un clic)
+                const iframeRect = iframe.getBoundingClientRect();
+                if (
+                    pointerX >= iframeRect.left &&
+                    pointerX <= iframeRect.right &&
+                    pointerY >= iframeRect.top &&
+                    pointerY <= iframeRect.bottom
+                ) {
+                    simulateClick(iframe);
                 }
-            }
+            });
 
-            // Ejecutar la simulación de clic sobre el play (puedes hacerlo con cualquier coordenada)
-            setInterval(() => {
-                simulateClick(pointerX, pointerY);
-            }, 100);
+            // Función para simular un clic sobre el iframe
+            function simulateClick(target) {
+                const event = new MouseEvent('click', {
+                    bubbles: true,
+                    cancelable: true,
+                    clientX: pointerX,
+                    clientY: pointerY
+                });
+                target.dispatchEvent(event);
+                console.log("Simulación de clic sobre el iframe");
+            }
         });
     </script>
 
