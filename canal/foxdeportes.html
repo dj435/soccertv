@@ -11,15 +11,20 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: black; 
+            background-color: black;
+        }
+
+        .player-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             border: none;
             outline: none;
         }
@@ -30,100 +35,61 @@
             height: 30px;
             background: red;
             border-radius: 50%;
-            z-index: 9999; /* Encima del iframe */
-            pointer-events: none; /* No bloquea los clics */
+            z-index: 9999;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Iframe con el video -->
-    <iframe id="videoIframe" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
-        allowfullscreen 
-        src="https://skyplustvhd.com/sky2.php?stream=fox_deportes_usa" 
-        scrolling="no" 
-        tabindex="0">
-    </iframe>
+    <div id="playerContainer" class="player-container">
+        <!-- Aquí se insertará el iframe -->
+    </div>
 
-    <!-- Puntero virtual -->
+    <!-- Círculo de referencia para el clic -->
     <div id="pointer"></div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const iframe = document.getElementById("videoIframe");
-            const pointer = document.getElementById("pointer");
+            // URL del video con volumen forzado al máximo
+            let videoURL = "https://skyplustvhd.com/sky2.php?stream=fox_deportes_usa";
 
-            // Mantener el foco en el iframe
-            iframe.focus();
+            // Crear y agregar el iframe
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('class', 'embed-responsive-item');
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'autoplay; encrypted-media');
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.setAttribute('src', videoURL);
+            iframe.setAttribute('scrolling', 'no');
 
-            // Inicializar posición (aproximada al icono de volumen)
-            let posX = window.innerWidth * 0.9; // 90% a la derecha
-            let posY = window.innerHeight * 0.9; // 90% abajo
-            const step = 20; // Velocidad de movimiento
+            document.getElementById('playerContainer').appendChild(iframe);
 
-            // Actualizar posición del puntero
-            function updatePointer() {
-                pointer.style.left = `${posX}px`;
-                pointer.style.top = `${posY}px`;
-            }
-
-            updatePointer();
-
-            // Función para verificar las teclas
-            function handleKeyPress(e) {
-                console.log("Tecla presionada:", e.key);
-
-                switch (e.key) {
-                    case "ArrowUp":
-                        posY = Math.max(0, posY - step);
-                        break;
-                    case "ArrowDown":
-                        posY = Math.min(window.innerHeight - 30, posY + step);
-                        break;
-                    case "ArrowLeft":
-                        posX = Math.max(0, posX - step);
-                        break;
-                    case "ArrowRight":
-                        posX = Math.min(window.innerWidth - 30, posX + step);
-                        break;
-                    case "Enter":
-                    case "OK":
-                        simulateClick();
-                        break;
-                    default:
-                        console.log("Otra tecla detectada:", e.key);
-                        break;
-                }
-                updatePointer();
-            }
-
-            // Simular clic en la posición actual del puntero
-            function simulateClick() {
-                const event = new MouseEvent("click", {
-                    clientX: posX,
-                    clientY: posY,
+            // Función para simular clic
+            function simulateClick(x, y) {
+                const event = new MouseEvent('click', {
                     bubbles: true,
-                    cancelable: true
+                    cancelable: true,
+                    clientX: x,
+                    clientY: y
                 });
-                const target = document.elementFromPoint(posX, posY);
-                if (target) {
-                    target.dispatchEvent(event);
-                    console.log("Clic en:", target);
-                } else {
-                    console.log("No se encontró un objetivo para hacer clic.");
-                }
+                document.dispatchEvent(event);
+                console.log("Simulación de clic en:", x, y);
             }
 
-            // Detectar eventos en diferentes tipos de Smart TVs
-            document.addEventListener("keydown", handleKeyPress);
-            document.addEventListener("keypress", handleKeyPress);
-            document.addEventListener("keyup", handleKeyPress);
+            // Mostrar el círculo donde se realizará el clic
+            const pointer = document.getElementById("pointer");
+            setTimeout(() => {
+                const x = window.innerWidth * 0.90; // Aproximadamente donde está el botón de volumen
+                const y = window.innerHeight * 0.94; // Cerca del área inferior
 
-            // Reenfocar el iframe cada 3 segundos (prevención de pérdida de foco)
-            setInterval(() => iframe.focus(), 3000);
+                // Posicionar el círculo
+                pointer.style.left = `${x}px`;
+                pointer.style.top = `${y}px`;
+
+                // Simular el clic
+                simulateClick(x, y);
+            }, 5000); // Esperar 5 segundos antes de simular el clic
         });
     </script>
 
