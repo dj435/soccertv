@@ -26,8 +26,8 @@
 
         #pointer {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             background: red;
             border-radius: 50%;
             z-index: 9999; /* Encima del iframe */
@@ -56,12 +56,13 @@
             const iframe = document.getElementById("videoIframe");
             const pointer = document.getElementById("pointer");
 
+            // Mantener el foco en el iframe
             iframe.focus();
 
-            let posX = window.innerWidth * 0.9; // Cerca del icono de volumen
-            let posY = window.innerHeight * 0.9; // Ajuste vertical
-
-            const step = 20; // Velocidad de movimiento del puntero
+            // Inicializar posición (aproximada al icono de volumen)
+            let posX = window.innerWidth * 0.9; // 90% a la derecha
+            let posY = window.innerHeight * 0.9; // 90% abajo
+            const step = 20; // Velocidad de movimiento
 
             // Actualizar posición del puntero
             function updatePointer() {
@@ -71,28 +72,55 @@
 
             updatePointer();
 
-            // Mover el puntero con el control remoto
-            document.addEventListener("keydown", (e) => {
+            // Función para verificar las teclas
+            function handleKeyPress(e) {
+                console.log("Tecla presionada:", e.key);
+
                 switch (e.key) {
-                    case "ArrowUp": posY -= step; break;
-                    case "ArrowDown": posY += step; break;
-                    case "ArrowLeft": posX -= step; break;
-                    case "ArrowRight": posX += step; break;
-                    case "Enter": simulateClick(); break; // Simular clic
+                    case "ArrowUp":
+                        posY = Math.max(0, posY - step);
+                        break;
+                    case "ArrowDown":
+                        posY = Math.min(window.innerHeight - 30, posY + step);
+                        break;
+                    case "ArrowLeft":
+                        posX = Math.max(0, posX - step);
+                        break;
+                    case "ArrowRight":
+                        posX = Math.min(window.innerWidth - 30, posX + step);
+                        break;
+                    case "Enter":
+                    case "OK":
+                        simulateClick();
+                        break;
+                    default:
+                        console.log("Otra tecla detectada:", e.key);
+                        break;
                 }
                 updatePointer();
-            });
+            }
 
-            // Simular clic en la posición del puntero
+            // Simular clic en la posición actual del puntero
             function simulateClick() {
-                const evt = new MouseEvent("click", {
+                const event = new MouseEvent("click", {
                     clientX: posX,
                     clientY: posY,
                     bubbles: true,
                     cancelable: true
                 });
-                document.elementFromPoint(posX, posY).dispatchEvent(evt);
+                const target = document.elementFromPoint(posX, posY);
+                if (target) {
+                    target.dispatchEvent(event);
+                    console.log("Clic en:", target);
+                } else {
+                    console.log("No se encontró un objetivo para hacer clic.");
+                }
             }
+
+            // Detectar eventos en diferentes tipos de Smart TVs
+            document.addEventListener("keydown", handleKeyPress);
+            document.addEventListener("keypress", handleKeyPress);
+            document.addEventListener("keyup", handleKeyPress);
 
             // Reenfocar el iframe cada 3 segundos (prevención de pérdida de foco)
             setInterval(() => iframe.focus(), 3000);
