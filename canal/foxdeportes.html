@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Simulación de Puntero</title>
+    <title>Imágenes con Puntero</title>
     <style>
         html, body {
             margin: 0;
@@ -18,16 +18,9 @@
             width: 100vw;
             height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             position: relative;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            outline: none;
         }
 
         #pointer {
@@ -36,7 +29,23 @@
             height: 30px;
             background: red;
             border-radius: 50%;
-            z-index: 0;/* Aseguramos que esté por encima del iframe */
+            z-index: 1; /* Aseguramos que esté por encima de las imágenes */
+        }
+
+        .image-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .image-container img {
+            width: 200px;
+            height: 150px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .image-container a {
+            text-decoration: none;
         }
     </style>
 </head>
@@ -44,7 +53,19 @@
 <body>
 
     <div id="playerContainer" class="player-container">
-        <!-- Aquí se insertará el iframe -->
+        <!-- Contenedor para las imágenes -->
+        <div class="image-container">
+            <!-- Enlaces a imágenes con URLs -->
+            <a href="https://example.com/1" target="_blank">
+                <img src="https://images2.imgbox.com/56/41/LRn34yDr_o.jpg" alt="Imagen 1">
+            </a>
+            <a href="https://example.com/2" target="_blank">
+                <img src="https://images2.imgbox.com/56/41/LRn34yDr_o.jpg" alt="Imagen 2">
+            </a>
+            <a href="https://example.com/3" target="_blank">
+                <img src="https://images2.imgbox.com/56/41/LRn34yDr_o.jpg" alt="Imagen 3">
+            </a>
+        </div>
     </div>
 
     <!-- Círculo de referencia para el puntero -->
@@ -52,20 +73,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // URL del video
-            let videoURL = "https://skyplustvhd.com/sky2.php?stream=fox_deportes_usa";
-
-            // Crear y agregar el iframe
-            const iframe = document.createElement('iframe');
-            iframe.setAttribute('class', 'embed-responsive-item');
-            iframe.setAttribute('frameborder', '0');
-            iframe.setAttribute('allow', 'autoplay; encrypted-media');
-            iframe.setAttribute('allowfullscreen', '');
-            iframe.setAttribute('src', videoURL);
-            iframe.setAttribute('scrolling', 'no');
-
-            document.getElementById('playerContainer').appendChild(iframe);
-
             // Obtener el puntero
             const pointer = document.getElementById('pointer');
             let pointerX = window.innerWidth / 2;
@@ -91,30 +98,7 @@
                 // Actualizamos la posición del puntero
                 pointer.style.left = `${pointerX}px`;
                 pointer.style.top = `${pointerY}px`;
-
-                // Verificar si el puntero está cerca del iframe (simulamos un clic)
-                const iframeRect = iframe.getBoundingClientRect();
-                if (
-                    pointerX >= iframeRect.left &&
-                    pointerX <= iframeRect.right &&
-                    pointerY >= iframeRect.top &&
-                    pointerY <= iframeRect.bottom
-                ) {
-                    simulateClick(iframe);
-                }
             });
-
-            // Función para simular un clic sobre el iframe
-            function simulateClick(target) {
-                const event = new MouseEvent('click', {
-                    bubbles: true,
-                    cancelable: true,
-                    clientX: pointerX,
-                    clientY: pointerY
-                });
-                target.dispatchEvent(event);
-                console.log("Simulación de clic sobre el iframe");
-            }
         });
     </script>
 
