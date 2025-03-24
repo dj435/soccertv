@@ -28,30 +28,31 @@
             transform: translateX(-50%);
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             z-index: 100;
         }
         .button {
-            font-size: 15px;
+            font-size: 16px;
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 5px 10px;
+            padding: 8px 15px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
             border: 1px solid white;
         }
-      
-      
-          .button:active {
-           
-            background-color: rgba(255, 0, 0, 0.8);
-    }
+
+        /* Estilo cuando el botón tiene el foco */
+        .button:focus {
+            outline: none; /* Evitar el borde predeterminado */
+            background-color: rgba(0, 255, 0, 0.8);
+        }
+
         #current-channel {
-            font-size: 15px;
+            font-size: 16px;
             background-color: rgba(255, 0, 0, 0.7);
             color: white;
-            padding: 5px 10px;
+            padding: 8px 15px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
@@ -68,6 +69,7 @@
         <button id="previous" class="button" onclick="changeChannel('previous')">Anterior</button>
         <div id="current-channel" class="button">ESPN</div>
         <button id="next" class="button" onclick="changeChannel('next')">Siguiente</button>
+        <button id="exit" class="button" onclick="exitPlayer()">Salir</button>
     </div>
 </div>
 
@@ -83,8 +85,14 @@
     ];
     
     let currentChannelIndex = 0;
+    let isPlaying = false;
 
+    // Cambiar de canal
     function changeChannel(direction) {
+        if (isPlaying) {
+            return;  // No permitir cambio de canal si el video ya está reproduciéndose
+        }
+        
         if (direction === 'next') {
             currentChannelIndex = (currentChannelIndex + 1) % channels.length;
         } else if (direction === 'previous') {
@@ -95,6 +103,21 @@
         document.getElementById('current-channel').innerText = channel.name;
         document.getElementById('channel-frame').src = channel.url;
     }
+
+    // Función para salir
+    function exitPlayer() {
+        document.getElementById('channel-frame').src = ""; // Detener el iframe
+        isPlaying = false; // Cambiar estado a no reproducir
+    }
+
+    // Hacer clic en el iframe para iniciar el video
+    document.getElementById('channel-frame').addEventListener('click', () => {
+        if (!isPlaying) {
+            const channel = channels[currentChannelIndex];
+            document.getElementById('channel-frame').src = channel.url; // Reproducir el canal
+            isPlaying = true;
+        }
+    });
 </script>
 
 </body>
